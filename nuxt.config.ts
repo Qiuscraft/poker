@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   app: {
     // head
     head: {
-      title: 'Element Plus + Nuxt 3',
+      title: 'Poker Timer',
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
