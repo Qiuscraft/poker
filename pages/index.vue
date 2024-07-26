@@ -1,30 +1,29 @@
 <template>
-  <div class="display">
-    <div class="text-display">{{ timeString }}</div>
-    <div class="text-display">盲注: {{ smallBlind }} / {{ bigBlind }}</div>
-    <div class="progress"><el-progress :percentage="progressPercentage" :show-text="false" :stroke-width="40" /></div>
-    <div class="button">
-      <div v-if="started && !paused">
-        <el-button type="primary" plain disabled size="large">开始计时</el-button>
-        <el-button type="warning" plain @click="pause()" size="large">暂停计时</el-button>
-        <el-button type="danger" plain @click="stop()" size="large">停止计时</el-button>
-      </div>
-      <div v-else-if="started && paused">
-        <el-button type="primary" plain disabled size="large">开始计时</el-button>
-        <el-button type="warning" plain @click="resume()" size="large">继续计时</el-button>
-        <el-button type="danger" plain @click="stop()" size="large">停止计时</el-button>
-      </div>
-      <div v-else>
-        <el-button type="primary" plain @click="start()" size="large">开始计时</el-button>
-        <el-button type="warning" plain disabled size="large">暂停计时</el-button>
-        <el-button type="danger" plain disabled size="large">停止计时</el-button>
-      </div>
+  <div class="center-container">
+    <div>{{ timeString }}</div>
+    <div>盲注: {{ smallBlind }} / {{ bigBlind }}</div>
+    <div class="progress-container">
+      <el-progress :percentage="progressPercentage" :show-text="false" />
+    </div>
+    <div v-if="started && !paused" class="button-container">
+      <el-button type="primary" plain disabled>开始计时</el-button>
+      <el-button type="warning" plain @click="pause()">暂停计时</el-button>
+      <el-button type="danger" plain @click="stop()">停止计时</el-button>
+    </div>
+    <div v-else-if="started && paused" class="button-container">
+      <el-button type="primary" plain disabled>开始计时</el-button>
+      <el-button type="warning" plain @click="resume()">继续计时</el-button>
+      <el-button type="danger" plain @click="stop()">停止计时</el-button>
+    </div>
+    <div v-else class="button-container">
+      <el-button type="primary" plain @click="start()">开始计时</el-button>
+      <el-button type="warning" plain disabled>暂停计时</el-button>
+      <el-button type="danger" plain disabled>停止计时</el-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-
 const started = ref(false)
 const paused = ref(false)
 const time = ref(0)
@@ -106,22 +105,19 @@ const timeString = computed(() => {
 </script>
 
 <style scoped>
-.display {
-  text-align: center;
+.center-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  font-size: 192px;
-  font-family: Arial, sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
 }
 
-.button {
-  padding: 10px 20px;
+.progress-container {
+  width: 18rem;
 }
 
-.progress .el-progress--line {
-  width: 1200px;
-}
 </style>
