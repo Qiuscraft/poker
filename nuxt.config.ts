@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   app: {
     // head
     head: {
-      title: 'Poker Timer',
+      title: '德州扑克管理器',
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
