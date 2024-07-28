@@ -64,4 +64,8 @@ export default defineNuxtConfig({
     importStyle: 'scss',
     themes: ['dark'],
   },
+
+  nitro: {
+    preset: 'vercel-edge',
+  },
 })
