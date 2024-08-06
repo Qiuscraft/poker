@@ -52,10 +52,14 @@ const started = ref(false)
 const paused = ref(false)
 const time = ref(0)
 let id: NodeJS.Timeout
-const rising_time = ref(12)
-const sb_list = ref('25\n50\n100\n200\n400\n800\n1600')
-const blind = ref('DON-T2500-0')
+const rising_time = ref(10)
+const sb_list = ref('10\n25\n50\n100\n200\n400\n800\n1600')
+const blind = ref('DON-T1500-1')
 const blind_options = [
+  {
+    value: 'DON-T1500-1',
+    label: 'DON-T1500-1',
+  },
   {
     value: 'DON-T2500-0',
     label: 'DON-T2500-0',
@@ -63,8 +67,21 @@ const blind_options = [
   {
     value: 'DON-T1500-0',
     label: 'DON-T1500-0',
-  }
+  },
 ]
+
+function selectBlind() {
+  if (blind.value === 'DON-T2500-0') {
+    rising_time.value = 12
+    sb_list.value = '25\n50\n100\n200\n400\n800\n1600'
+  } else if (blind.value === 'DON-T1500-0') {
+    rising_time.value = 6
+    sb_list.value = '10\n15\n20\n25\n30\n40\n50\n60\n80\n100\n120\n150\n200\n250\n300\n400\n500\n600'
+  } else if (blind.value === 'DON-T1500-1') {
+    rising_time.value = 10
+    sb_list.value = '10\n25\n50\n100\n200\n400\n800\n1600'
+  }
+}
 
 const blindLevels = computed(() => {
   return sb_list.value.split('\n').map((sb) => {
@@ -120,16 +137,6 @@ function stop() {
   started.value = false
   paused.value = false
   clearInterval(id)
-}
-
-function selectBlind() {
-  if (blind.value === 'DON-T2500-0') {
-    rising_time.value = 12
-    sb_list.value = '25\n50\n100\n200\n400\n800\n1600'
-  } else if (blind.value === 'DON-T1500-0') {
-    rising_time.value = 6
-    sb_list.value = '10\n15\n20\n25\n30\n40\n50\n60\n80\n100\n120\n150\n200\n250\n300\n400\n500\n600'
-  }
 }
 
 const timeString = computed(() => {
