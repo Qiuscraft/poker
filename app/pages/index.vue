@@ -1,19 +1,15 @@
-<script setup lang="ts">
-definePageMeta({
-  layout: 'home',
-})
-</script>
-
 <template>
-  <div class="page-index">
-    <TheLogos />
-    <TheExamples />
-  </div>
+    <div>
+      跳转中...
+    </div>
 </template>
 
-<style>
-.page-index {
-  padding-top: 60px;
-  text-align: center;
-}
-</style>
+<script setup>
+useHead({
+    title: '跳转中...'
+  })
+  
+  onMounted(() => {
+    useRouter().push('/timer');
+  });
+</script>
