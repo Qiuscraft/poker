@@ -3,47 +3,58 @@
     <div class="center-container">
       <div>{{ timeString }}</div>
       <div>盲注: {{ smallBlind }} / {{ bigBlind }}</div>
+
       <div class="progress-container">
         <el-progress :percentage="progressPercentage" :show-text="false" />
       </div>
+
       <div v-if="started && !paused" class="button-container">
         <el-button type="primary" plain disabled>开始计时</el-button>
         <el-button type="warning" plain @click="pause()">暂停计时</el-button>
         <el-button type="danger" plain @click="stop()">停止计时</el-button>
       </div>
+
       <div v-else-if="started && paused" class="button-container">
         <el-button type="primary" plain disabled>开始计时</el-button>
         <el-button type="warning" plain @click="resume()">继续计时</el-button>
         <el-button type="danger" plain @click="stop()">停止计时</el-button>
       </div>
+
       <div v-else class="button-container">
         <el-button type="primary" plain @click="start()">开始计时</el-button>
         <el-button type="warning" plain disabled>暂停计时</el-button>
         <el-button type="danger" plain disabled>停止计时</el-button>
       </div>
+
     </div>
     
     <div class="config">
-      模板：<el-select
-      v-model="blind"
-      placeholder="请选择模板"
-      style="width: 240px"
-      @change="selectBlind"
-    >
-      <el-option
-        v-for="item in blind_options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
+      <div>模板：</div>
+      <el-select
+        v-model="blind"
+        placeholder="请选择模板"
+        style="width: 240px"
+        @change="selectBlind"
+      >
+        <el-option
+          v-for="item in blind_options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+
+      <div>涨盲时间：（单位：分钟）</div>
+      <el-input-number v-model="rising_time" :min="1" :max="1440" />
+
+      <div>小盲列表：（大盲会自动计算）</div>
+      <el-input
+        v-model="sb_list"
+        style="width: 240px"
+        autosize
+        type="textarea"
       />
-    </el-select>
-      涨盲时间：（单位：分钟）<el-input-number v-model="rising_time" :min="1" :max="1440" />
-      小盲列表：（大盲会自动计算）<el-input
-      v-model="sb_list"
-      style="width: 240px"
-      autosize
-      type="textarea"
-      />
+
     </div>
   </div>
 </template>
@@ -55,19 +66,19 @@ const started = ref(false)
 const paused = ref(false)
 const time = ref(0)
 let id: NodeJS.Timeout
-const rising_time = ref(1)
-const sb_list = ref('0')
-const blind = ref('Not Selected')
+const blind = ref('default')
+const template = ref(templates[blind.value])
+const rising_time = ref(template.value.rising_time)
+const sb_list = ref(template.value.sb_list)
 const blind_options = Object.keys(templates).map(key => ({
   value: key,
   label: key,
 }))
 
 function selectBlind() {
-  const template = templates[blind.value];
-  if (template) {
-    rising_time.value = template.rising_time;
-    sb_list.value = template.sb_list;
+  if (template.value) {
+    rising_time.value = template.value.rising_time;
+    sb_list.value = template.value.sb_list;
   }
 }
 
@@ -137,33 +148,34 @@ const timeString = computed(() => {
   return `${hours_str}:${minutes_str}:${seconds_str}`
 })
 
-  useHead({
-    title: '计时器'
-  })
+useHead({
+  title: '计时器'
+})
 
 </script>
 
 <style scoped>
-.center-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  font-size: 3rem;
-  font-weight: bold;
-  text-align: center;
-}
+  .center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+  }
 
-.progress-container {
-  width: 18rem;
-}
-.config {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  text-align: center;
-}
+  .progress-container {
+    width: 18rem;
+  }
+
+  .config {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+  }
 </style>
